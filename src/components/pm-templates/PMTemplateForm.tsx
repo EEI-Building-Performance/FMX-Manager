@@ -21,7 +21,7 @@ interface TaskTemplate {
 interface PMTemplate {
   id?: number;
   name: string;
-  description?: string;
+  description?: string | null;
   tasks?: Array<{
     taskTemplate: TaskTemplate;
   }>;

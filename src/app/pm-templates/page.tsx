@@ -155,7 +155,7 @@ export default function PMTemplatesPage() {
   ];
 
   return (
-    <AppLayout>
+    <AppLayout title="PM Templates">
       <div className={styles.container}>
         <div className={styles.header}>
           <div>
@@ -173,7 +173,7 @@ export default function PMTemplatesPage() {
           <DataTable
             data={pmTemplates}
             columns={columns}
-            loading={fetchPMTemplates.isLoading}
+            isLoading={fetchPMTemplates.isLoading}
             onEdit={handleEdit}
             onDelete={handleDelete}
             emptyMessage="No PM templates found. Create your first PM template to get started."
@@ -187,7 +187,7 @@ export default function PMTemplatesPage() {
             setEditingTemplate(undefined);
           }}
           title={editingTemplate ? 'Edit PM Template' : 'Add PM Template'}
-          size="large"
+          size="xl"
         >
           <PMTemplateForm
             pmTemplate={editingTemplate}
