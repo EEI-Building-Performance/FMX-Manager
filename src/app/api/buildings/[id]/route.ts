@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { validateAdminToken, unauthorizedResponse, errorResponse, successResponse } from '@/lib/auth';
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
@@ -12,7 +12,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 
   try {
-    const buildingId = parseInt(params.id);
+    const { id } = await params;
+    const buildingId = parseInt(id);
     if (isNaN(buildingId)) {
       return errorResponse('Invalid building ID', 400);
     }
@@ -46,7 +47,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
   }
 
   try {
-    const buildingId = parseInt(params.id);
+    const { id } = await params;
+    const buildingId = parseInt(id);
     if (isNaN(buildingId)) {
       return errorResponse('Invalid building ID', 400);
     }
@@ -100,7 +102,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   }
 
   try {
-    const buildingId = parseInt(params.id);
+    const { id } = await params;
+    const buildingId = parseInt(id);
     if (isNaN(buildingId)) {
       return errorResponse('Invalid building ID', 400);
     }
