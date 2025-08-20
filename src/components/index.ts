@@ -19,6 +19,9 @@ export { EquipmentForm } from './buildings/EquipmentForm';
 // Instruction components
 export { InstructionForm } from './instructions/InstructionForm';
 
+// Task Template components
+export { TaskTemplateForm } from './task-templates/TaskTemplateForm';
+
 // Auth components
 export { AuthProvider } from './auth/AuthProvider';
 export { AdminTokenSetup } from './auth/AdminTokenSetup';

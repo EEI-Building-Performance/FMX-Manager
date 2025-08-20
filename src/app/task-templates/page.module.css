@@ -1,0 +1,8 @@
+@import "../../styles/tokens.css";
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Additional styles can be added here for task template specific layouts */
