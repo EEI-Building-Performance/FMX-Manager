@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  max-width: 100%;
+  width: 800px;
+  max-width: 90vw;
 }
 
 .basicInfo {
@@ -57,9 +58,10 @@
 
 .taskPanels {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 380px 380px;
   gap: var(--space-4);
   min-height: 400px;
+  justify-content: center;
 }
 
 .taskPanel {
@@ -68,6 +70,8 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-bg);
+  min-width: 0;
+  width: 100%;
 }
 
 .panelHeader {
@@ -163,6 +167,10 @@
   color: var(--color-text-secondary);
   font-size: 0.875rem;
   font-style: italic;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.4;
 }
 
 .actions {
@@ -174,7 +182,12 @@
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .form {
+    width: 100%;
+    max-width: 100%;
+  }
+  
   .taskPanels {
     grid-template-columns: 1fr;
     gap: var(--space-3);

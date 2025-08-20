@@ -181,7 +181,7 @@ export const PMTemplateForm: React.FC<PMTemplateFormProps> = ({
                   </div>
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     onClick={() => addTask(task.id)}
                     className={styles.addButton}
@@ -218,7 +218,7 @@ export const PMTemplateForm: React.FC<PMTemplateFormProps> = ({
                   </div>
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="danger"
                     size="sm"
                     onClick={() => removeTask(task.id)}
                     className={styles.removeButton}
@@ -241,7 +241,7 @@ export const PMTemplateForm: React.FC<PMTemplateFormProps> = ({
       <div className={styles.actions}>
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           onClick={onCancel}
           disabled={isLoading}
         >
