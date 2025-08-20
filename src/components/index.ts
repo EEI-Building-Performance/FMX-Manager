@@ -25,6 +25,9 @@ export { TaskTemplateForm } from './task-templates/TaskTemplateForm';
 // PM Template components
 export { PMTemplateForm } from './pm-templates/PMTemplateForm';
 
+// Assignment components
+export { AssignmentManager } from './assignments/AssignmentManager';
+
 // Auth components
 export { AuthProvider } from './auth/AuthProvider';
 export { AdminTokenSetup } from './auth/AdminTokenSetup';

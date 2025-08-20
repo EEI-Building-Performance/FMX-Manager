@@ -7,20 +7,22 @@ interface SelectOption {
   label: string;
 }
 
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
   label?: string;
   error?: string;
   isRequired?: boolean;
-  options: SelectOption[];
+  options?: SelectOption[];
   placeholder?: string;
+  onChange?: (value: string) => void;
 }
 
 export function Select({ 
   label, 
   error, 
   isRequired = false,
-  options,
+  options = [],
   placeholder,
+  onChange,
   className, 
   id,
   ...rest 
@@ -42,6 +44,7 @@ export function Select({
           error && cls.error,
           className
         )}
+        onChange={(e) => onChange?.(e.target.value)}
         {...rest}
       >
         {placeholder && (

@@ -1,0 +1,322 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--space-3) 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Template Selection */
+.templateSelection {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+}
+
+.templateSelect {
+  margin-bottom: var(--space-3);
+}
+
+.templateInfo {
+  padding: var(--space-3);
+  background: color-mix(in srgb, var(--color-brand) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-brand) 20%, transparent);
+  border-radius: var(--radius-sm);
+}
+
+.templateInfo h4 {
+  margin: 0 0 var(--space-1) 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.templateDescription {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* Current Assignments */
+.currentAssignments {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+}
+
+.assignmentsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.assignmentItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  transition: border-color 0.2s ease;
+}
+
+.assignmentItem:hover {
+  border-color: var(--color-brand);
+}
+
+.assignmentInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.equipmentName {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.buildingName {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-half);
+}
+
+.equipmentType {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.removeButton {
+  flex-shrink: 0;
+  margin-left: var(--space-3);
+}
+
+/* New Assignments */
+.newAssignments {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+}
+
+.buildingSelection {
+  margin-bottom: var(--space-4);
+}
+
+.equipmentSelection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.equipmentFilters {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.typeFilter {
+  flex: 1;
+  min-width: 200px;
+}
+
+.selectAllButton {
+  flex-shrink: 0;
+}
+
+.equipmentList {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.equipmentListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3);
+  background: color-mix(in srgb, var(--color-border) 20%, transparent);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.selectedCount {
+  font-size: 0.75rem;
+  color: var(--color-brand);
+  font-weight: 500;
+}
+
+.equipmentItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.equipmentItem:last-child {
+  border-bottom: none;
+}
+
+.equipmentItem:hover {
+  background: color-mix(in srgb, var(--color-brand) 5%, transparent);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.equipmentDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.equipmentMeta {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-top: var(--space-half);
+}
+
+/* Assignment Form */
+.assignmentForm {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-success) 5%, transparent);
+}
+
+.formTitle {
+  margin: 0 0 var(--space-3) 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  margin-top: var(--space-5); /* Align with other form fields */
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.assignButton {
+  min-width: 200px;
+}
+
+/* Empty States */
+.emptyState {
+  padding: var(--space-6) var(--space-3);
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-style: italic;
+  background: color-mix(in srgb, var(--color-border) 10%, transparent);
+  border-radius: var(--radius-sm);
+}
+
+.loadingState {
+  padding: var(--space-4) var(--space-3);
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  background: color-mix(in srgb, var(--color-brand) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-brand) 20%, transparent);
+  border-radius: var(--radius-sm);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    gap: var(--space-4);
+  }
+  
+  .equipmentFilters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .selectAllButton {
+    align-self: flex-start;
+  }
+  
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  
+  .assignmentItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  
+  .removeButton {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+  
+  .equipmentListHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+}

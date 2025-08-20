@@ -1,0 +1,46 @@
+.container {
+  padding: var(--space-6);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: var(--space-6);
+  text-align: center;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.content {
+  background: var(--color-bg);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-4);
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .subtitle {
+    font-size: 0.875rem;
+  }
+}
