@@ -16,6 +16,9 @@ export { Modal } from './ui/Modal';
 export { BuildingForm } from './buildings/BuildingForm';
 export { EquipmentForm } from './buildings/EquipmentForm';
 
+// Instruction components
+export { InstructionForm } from './instructions/InstructionForm';
+
 // Auth components
 export { AuthProvider } from './auth/AuthProvider';
 export { AdminTokenSetup } from './auth/AdminTokenSetup';

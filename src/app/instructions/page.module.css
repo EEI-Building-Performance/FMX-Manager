@@ -1,0 +1,33 @@
+@import "../../styles/tokens.css";
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.stepsPreview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: 300px;
+}
+
+.stepPreview {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.3;
+  overflow: hidden;
+}
+
+.moreSteps {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .stepsPreview {
+    max-width: 200px;
+  }
+}

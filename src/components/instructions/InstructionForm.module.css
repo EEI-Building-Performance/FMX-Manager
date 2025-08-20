@@ -1,0 +1,140 @@
+@import "../../styles/tokens.css";
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.stepsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.stepsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stepsLabel {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.required {
+  color: var(--color-error);
+  margin-left: var(--space-1);
+}
+
+.errorText {
+  font-size: var(--text-sm);
+  color: var(--color-error);
+}
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stepItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s ease;
+}
+
+.stepItem:hover {
+  border-color: var(--color-border);
+}
+
+.stepNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--color-brand);
+  color: white;
+  border-radius: 50%;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: var(--space-1);
+}
+
+.stepInput {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepActions {
+  display: flex;
+  gap: var(--space-1);
+  flex-shrink: 0;
+  margin-top: var(--space-1);
+}
+
+.moveButton {
+  min-width: 2rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: var(--text-lg) !important;
+  font-weight: bold !important;
+}
+
+.iconButton {
+  min-width: 2rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.addStepButton {
+  align-self: flex-start;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .stepItem {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .stepActions {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+  
+  .actions {
+    flex-direction: column-reverse;
+  }
+}
