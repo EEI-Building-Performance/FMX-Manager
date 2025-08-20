@@ -1,0 +1,34 @@
+@import "../../styles/tokens.css";
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-bg-secondary);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.content {
+  flex: 1;
+  padding: var(--space-6);
+  overflow-y: auto;
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+  .main {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .content {
+    padding: var(--space-4);
+  }
+}

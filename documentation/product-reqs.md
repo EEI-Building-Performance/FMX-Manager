@@ -100,16 +100,7 @@ No multi-user support is required initially; a single admin token protects API a
 
 Breakdown into Dev Tasks
 
-Setup & Infrastructure
-	•	Initialize Next.js + Prisma + MySQL project
-	•	Set up .env with DATABASE_URL + ADMIN_TOKEN
-	•	Create Prisma schema (as defined)
-	•	Run initial migrations
-
 Import Modules
-	•	CSV upload API for Buildings
-	•	CSV upload API for Equipment
-	•	UI for import with validation feedback
 	•	List views for Buildings + Equipment
 
 Instruction Module

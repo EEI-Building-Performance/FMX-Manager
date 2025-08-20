@@ -1,95 +1,52 @@
-import Image from "next/image";
+import { AppLayout } from '@/components';
 import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <AppLayout title="Dashboard">
+      <div className={styles.container}>
+        <div className={styles.welcome}>
+          <h2 className={styles.heading}>Welcome to FMX Maintenance Template Manager</h2>
+          <p className={styles.description}>
+            Create and manage planned maintenance templates for your school district's HVAC equipment. 
+            Generate FMX-compatible import files with ease.
+          </p>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <div className={styles.quickActions}>
+          <h3 className={styles.sectionTitle}>Quick Actions</h3>
+          <div className={styles.actionGrid}>
+            <div className={styles.actionCard}>
+              <h4>Buildings & Equipment</h4>
+              <p>Import and manage your buildings and HVAC equipment inventory.</p>
+            </div>
+            <div className={styles.actionCard}>
+              <h4>Create Instructions</h4>
+              <p>Define step-by-step maintenance instruction sets.</p>
+            </div>
+            <div className={styles.actionCard}>
+              <h4>Task Templates</h4>
+              <p>Set up maintenance task templates with schedules and requirements.</p>
+            </div>
+            <div className={styles.actionCard}>
+              <h4>Export to FMX</h4>
+              <p>Generate Excel files ready for FMX import.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.getStarted}>
+          <h3 className={styles.sectionTitle}>Getting Started</h3>
+          <ol className={styles.stepsList}>
+            <li>Import your buildings and equipment data</li>
+            <li>Create instruction sets for your maintenance procedures</li>
+            <li>Define task templates with scheduling information</li>
+            <li>Bundle tasks into PM templates</li>
+            <li>Assign templates to specific equipment</li>
+            <li>Export FMX-compatible spreadsheets</li>
+          </ol>
+        </div>
+      </div>
+    </AppLayout>
   );
 }
