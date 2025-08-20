@@ -22,6 +22,9 @@ export { InstructionForm } from './instructions/InstructionForm';
 // Task Template components
 export { TaskTemplateForm } from './task-templates/TaskTemplateForm';
 
+// PM Template components
+export { PMTemplateForm } from './pm-templates/PMTemplateForm';
+
 // Auth components
 export { AuthProvider } from './auth/AuthProvider';
 export { AdminTokenSetup } from './auth/AdminTokenSetup';
