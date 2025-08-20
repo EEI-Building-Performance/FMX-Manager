@@ -7,7 +7,8 @@ import {
   Modal, 
   BuildingForm, 
   EquipmentForm,
-  Button 
+  Button,
+  Select
 } from '@/components';
 import { AuthProvider } from '@/components/auth/AuthProvider';
 import { useApi, apiClient } from '@/hooks/useApi';
@@ -53,6 +54,7 @@ export default function BuildingsPage() {
   const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
   const [modalType, setModalType] = useState<ModalType>(null);
   const [activeTab, setActiveTab] = useState<'buildings' | 'equipment'>('buildings');
+  const [selectedBuildingFilter, setSelectedBuildingFilter] = useState<string>('');
 
   const fetchBuildings = useApi(() => apiClient.get<Building[]>('/api/buildings'));
   const fetchEquipment = useApi(() => apiClient.get<Equipment[]>('/api/equipment'));
@@ -180,6 +182,11 @@ export default function BuildingsPage() {
     },
   ];
 
+  // Filter equipment by selected building
+  const filteredEquipment = selectedBuildingFilter 
+    ? equipment.filter(eq => eq.buildingId === parseInt(selectedBuildingFilter))
+    : equipment;
+
   const equipmentColumns: Column<Equipment>[] = [
     {
       key: 'name',
@@ -206,6 +213,15 @@ export default function BuildingsPage() {
       header: 'Assignments',
       render: (equipment) => equipment._count.assignments.toString(),
     },
+  ];
+
+  // Building filter options
+  const buildingFilterOptions = [
+    { value: '', label: 'All Buildings' },
+    ...buildings.map(building => ({
+      value: building.id.toString(),
+      label: building.name
+    }))
   ];
 
   return (
@@ -241,16 +257,37 @@ export default function BuildingsPage() {
         )}
 
         {activeTab === 'equipment' && (
-          <DataTable
-            data={equipment}
-            columns={equipmentColumns}
-            onAdd={handleCreateEquipment}
-            onEdit={handleEditEquipment}
-            onDelete={handleDeleteEquipment}
-            isLoading={fetchEquipment.isLoading}
-            title="Equipment"
-            emptyMessage="No equipment found. Add your first equipment to get started."
-          />
+          <div className={styles.equipmentSection}>
+            <div className={styles.equipmentFilters}>
+              <Select
+                label="Filter by Building"
+                value={selectedBuildingFilter}
+                onChange={(e) => setSelectedBuildingFilter(e.target.value)}
+                options={buildingFilterOptions}
+                className={styles.buildingFilter}
+              />
+              {selectedBuildingFilter && (
+                <div className={styles.filterInfo}>
+                  Showing {filteredEquipment.length} of {equipment.length} equipment items
+                </div>
+              )}
+            </div>
+            
+            <DataTable
+              data={filteredEquipment}
+              columns={equipmentColumns}
+              onAdd={handleCreateEquipment}
+              onEdit={handleEditEquipment}
+              onDelete={handleDeleteEquipment}
+              isLoading={fetchEquipment.isLoading}
+              title="Equipment"
+              emptyMessage={
+                selectedBuildingFilter 
+                  ? "No equipment found for the selected building." 
+                  : "No equipment found. Add your first equipment to get started."
+              }
+            />
+          </div>
         )}
 
         <Modal
