@@ -165,13 +165,11 @@
 /* Desktop styles */
 @media (min-width: 769px) {
   .sidebar {
-    position: static;
-    transform: none;
+    transform: translateX(0);
     height: 100vh;
-    z-index: auto;
   }
   
   .sidebar.open {
-    transform: none;
+    transform: translateX(0);
   }
 }

@@ -1,0 +1,71 @@
+@import "../../styles/tokens.css";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: var(--space-8);
+}
+
+.setup {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.setup h2 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+
+.setup p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+  line-height: 1.6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.info {
+  padding: var(--space-4);
+  background: var(--color-bg-muted);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-warning);
+}
+
+.info p {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  text-align: left;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.success {
+  text-align: center;
+}
+
+.success h3 {
+  font-size: var(--text-lg);
+  color: var(--color-success);
+  margin-bottom: var(--space-2);
+}
+
+.success p {
+  color: var(--color-text-secondary);
+  margin: 0;
+}

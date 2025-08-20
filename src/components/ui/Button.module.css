@@ -1,0 +1,106 @@
+@import "../../styles/tokens.css";
+
+.base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-family: var(--font-base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  text-decoration: none;
+}
+
+.base:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Variants */
+.variant-primary {
+  background: var(--color-brand);
+  color: white;
+}
+
+.variant-primary:hover:not(.disabled) {
+  background: var(--color-brand-dark);
+}
+
+.variant-secondary {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.variant-secondary:hover:not(.disabled) {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-brand);
+}
+
+.variant-danger {
+  background: var(--color-error);
+  color: white;
+}
+
+.variant-danger:hover:not(.disabled) {
+  background: color-mix(in oklch, var(--color-error), black 15%);
+}
+
+.variant-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+
+.variant-ghost:hover:not(.disabled) {
+  background: var(--color-bg-muted);
+  color: var(--color-text);
+}
+
+/* Sizes */
+.size-sm {
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-3);
+  min-height: 2rem;
+}
+
+.size-md {
+  font-size: var(--text-base);
+  padding: var(--space-3) var(--space-4);
+  min-height: 2.5rem;
+}
+
+.size-lg {
+  font-size: var(--text-lg);
+  padding: var(--space-4) var(--space-6);
+  min-height: 3rem;
+}
+
+/* States */
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loading .content {
+  opacity: 0;
+}
+
+.spinner {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
