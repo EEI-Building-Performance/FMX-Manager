@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Building {
+  id              Int         @id @default(autoincrement())
+  name            String      @unique
+  fmxBuildingName String      @unique
+  equipment       Equipment[]
+}
+
+model Equipment {
+  id               Int                    @id @default(autoincrement())
+  buildingId       Int
+  building         Building               @relation(fields: [buildingId], references: [id])
+  name             String
+  type             String
+  fmxEquipmentName String                 @unique
+  assignments      PMTemplateAssignment[]
+}
+
+model RequestType {
+  id    Int            @id @default(autoincrement())
+  name  String         @unique
+  tasks TaskTemplate[]
+}
+
+model InstructionSet {
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  description String?
+  steps       String
+  tasks       TaskTemplate[]
+}
+
+enum RepeatEnum {
+  NEVER
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum MonthlyMode {
+  DAY_OF_MONTH
+  DAY_OF_WEEK
+  WEEKDAY_OF_MONTH
+  WEEKEND_DAY_OF_MONTH
+}
+
+enum NextDueMode {
+  FIXED
+  VARIABLE
+}
+
+model TaskTemplate {
+  id            Int            @id @default(autoincrement())
+  name          String         @unique
+  instructionId Int
+  instruction   InstructionSet @relation(fields: [instructionId], references: [id])
+  requestTypeId Int
+  requestType   RequestType    @relation(fields: [requestTypeId], references: [id])
+
+  location            String?
+  firstDueDate        DateTime
+  repeatEnum          RepeatEnum
+  dailyEveryXDays     Int?
+  weeklySun           Boolean?     @default(false)
+  weeklyMon           Boolean?     @default(false)
+  weeklyTues          Boolean?     @default(false)
+  weeklyWed           Boolean?     @default(false)
+  weeklyThur          Boolean?     @default(false)
+  weeklyFri           Boolean?     @default(false)
+  weeklySat           Boolean?     @default(false)
+  weeklyEveryXWeeks   Int?
+  monthlyMode         MonthlyMode?
+  monthlyEveryXMonths Int?
+  yearlyEveryXYears   Int?
+
+  excludeFrom         DateTime?
+  excludeThru         DateTime?
+  nextDueMode         NextDueMode @default(FIXED)
+  inventoryNames      String?
+  inventoryQuantities String?
+  estTimeHours        Decimal?    @db.Decimal(5, 2)
+  notes               String?
+
+  pmTemplateTasks PMTemplateTask[]
+}
+
+model PMTemplate {
+  id          Int                    @id @default(autoincrement())
+  name        String                 @unique
+  description String?
+  tasks       PMTemplateTask[]
+  assignments PMTemplateAssignment[]
+}
+
+model PMTemplateTask {
+  pmTemplateId   Int
+  taskTemplateId Int
+  pmTemplate     PMTemplate   @relation(fields: [pmTemplateId], references: [id])
+  taskTemplate   TaskTemplate @relation(fields: [taskTemplateId], references: [id])
+
+  // optional overrides (use later if needed)
+  overrideLocation     String?
+  overrideEstTimeHours Decimal? @db.Decimal(5, 2)
+  overrideNotes        String?
+
+  @@id([pmTemplateId, taskTemplateId])
+}
+
+model PMTemplateAssignment {
+  id                        Int        @id @default(autoincrement())
+  pmTemplateId              Int
+  pmTemplate                PMTemplate @relation(fields: [pmTemplateId], references: [id])
+  equipmentId               Int
+  equipment                 Equipment  @relation(fields: [equipmentId], references: [id])
+  buildingId                Int
+  assignedUsers             String?
+  outsourced                Boolean    @default(false)
+  remindBeforeDaysPrimary   Int?
+  remindBeforeDaysSecondary Int?
+  remindAfterDays           Int?
+}
