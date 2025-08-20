@@ -50,6 +50,7 @@ export const AssignmentManager: React.FC = () => {
   const [equipmentTypes, setEquipmentTypes] = useState<string[]>([]);
   const [selectedEquipmentType, setSelectedEquipmentType] = useState<string>('');
   const [selectedEquipmentIds, setSelectedEquipmentIds] = useState<number[]>([]);
+  const [assignmentFilterBuildingId, setAssignmentFilterBuildingId] = useState<number | null>(null);
   const [assignmentSettings, setAssignmentSettings] = useState({
     assignedUsers: '',
     outsourced: false,
@@ -135,6 +136,7 @@ export const AssignmentManager: React.FC = () => {
     setSelectedBuildingId(null);
     setSelectedEquipmentIds([]);
     setSelectedEquipmentType('');
+    setAssignmentFilterBuildingId(null);
   };
 
   const handleEquipmentSelection = (equipmentId: number, checked: boolean) => {
@@ -209,9 +211,15 @@ export const AssignmentManager: React.FC = () => {
     return (availableEquipment || []).filter(eq => eq.type === selectedEquipmentType);
   };
 
+  const getFilteredAssignments = () => {
+    if (!assignmentFilterBuildingId) return assignments || [];
+    return (assignments || []).filter(assignment => assignment.equipment.building.id === assignmentFilterBuildingId);
+  };
+
   const selectedTemplate = (pmTemplates || []).find(t => t.id === selectedTemplateId);
   const selectedBuilding = (buildings || []).find(b => b.id === selectedBuildingId);
   const filteredEquipment = getFilteredEquipment();
+  const filteredAssignments = getFilteredAssignments();
 
   // Prepare options for Select components (with safe defaults)
   const templateOptions = (pmTemplates || []).map(template => ({
@@ -219,10 +227,13 @@ export const AssignmentManager: React.FC = () => {
     label: template.name
   }));
 
-  const buildingOptions = (buildings || []).map(building => ({
-    value: building.id.toString(),
-    label: building.name
-  }));
+  const buildingOptions = [
+    { value: '', label: 'All schools' },
+    ...(buildings || []).map(building => ({
+      value: building.id.toString(),
+      label: building.name
+    }))
+  ];
 
   const equipmentTypeOptions = (equipmentTypes || []).map(type => ({
     value: type,
@@ -270,17 +281,37 @@ export const AssignmentManager: React.FC = () => {
         <>
           {/* Current Assignments */}
           <div className={styles.currentAssignments}>
-            <h3 className={styles.sectionTitle}>
-              Current Assignments ({assignments?.length || 0})
-            </h3>
+            <div className={styles.assignmentsHeader}>
+              <h3 className={styles.sectionTitle}>
+                Current Assignments ({(assignments || []).length})
+              </h3>
+              
+              <div className={styles.assignmentFilters}>
+                <label className={styles.filterLabel}>Filter by School:</label>
+                <Select
+                  value={assignmentFilterBuildingId?.toString() || ''}
+                  onChange={(value) => setAssignmentFilterBuildingId(value ? parseInt(value) : null)}
+                  options={buildingOptions}
+                  className={styles.assignmentFilterSelect}
+                />
+                {assignmentFilterBuildingId && (
+                  <span className={styles.filterResult}>
+                    Showing {filteredAssignments.length} of {(assignments || []).length}
+                  </span>
+                )}
+              </div>
+            </div>
             
-            {(assignments || []).length === 0 ? (
+            {filteredAssignments.length === 0 ? (
               <div className={styles.emptyState}>
-                No equipment currently assigned to this template.
+                {assignmentFilterBuildingId 
+                  ? `No equipment assigned to this template in the selected school.`
+                  : 'No equipment currently assigned to this template.'
+                }
               </div>
             ) : (
               <div className={styles.assignmentsList}>
-                {(assignments || []).map(assignment => (
+                {filteredAssignments.map(assignment => (
                   <div key={assignment.id} className={styles.assignmentItem}>
                     <div className={styles.assignmentInfo}>
                       <div className={styles.equipmentName}>

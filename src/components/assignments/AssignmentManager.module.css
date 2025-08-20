@@ -57,6 +57,38 @@
   background: var(--color-bg);
 }
 
+.assignmentsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.assignmentFilters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.assignmentFilterSelect {
+  min-width: 200px;
+}
+
+.filterResult {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+  white-space: nowrap;
+}
+
 .assignmentsList {
   display: flex;
   flex-direction: column;
@@ -318,5 +350,20 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-1);
+  }
+  
+  .assignmentsHeader {
+    gap: var(--space-2);
+  }
+  
+  .assignmentFilters {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  
+  .assignmentFilterSelect {
+    min-width: auto;
+    width: 100%;
   }
 }
