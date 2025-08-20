@@ -38,11 +38,21 @@ model RequestType {
 }
 
 model InstructionSet {
-  id          Int            @id @default(autoincrement())
-  name        String         @unique
+  id          Int               @id @default(autoincrement())
+  name        String            @unique // FMX "Instruction" (must match exactly on export)
   description String?
-  steps       String
+  steps       InstructionStep[]
   tasks       TaskTemplate[]
+}
+
+model InstructionStep {
+  id               Int            @id @default(autoincrement())
+  instructionSetId Int
+  instructionSet   InstructionSet @relation(fields: [instructionSetId], references: [id], onDelete: Cascade)
+  orderIndex       Int
+  text             String
+
+  @@index([instructionSetId, orderIndex])
 }
 
 enum RepeatEnum {
