@@ -135,8 +135,12 @@ export async function POST(request: NextRequest) {
     // Create Time-based tasks sheet with exact FMX format
     const tasksSheet = workbook.addWorksheet('Time-based tasks');
     
-    // Set column widths (A-BC)
-    const columnWidths = [15, 20, 15, 20, 15, 15, 12, 12, 8, 8, 8, 8, 8, 8, 8, 12, 12, 12, 12, 15, 15, 15, 15, 15, 15, 15, 15, 15];
+    // Set column widths (A through BL)
+    const columnWidths = [
+      15, 20, 15, 20, 15, 15, 12, 12, 8, 8, 8, 8, 8, 8, 8, 12, 12, 12, 12, 15, 15, 15, 15, 15, 15, 15, // A-Z
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, // AA-AZ
+      12, 12, 12, 12, 15, 15, 15, 12, 20, 15, 15, 15 // BA-BL
+    ];
     columnWidths.forEach((width, index) => {
       tasksSheet.getColumn(index + 1).width = width;
     });
@@ -281,6 +285,24 @@ export async function POST(request: NextRequest) {
         type: 'pattern',
         pattern: 'solid',
         fgColor: { argb: 'FFC0504D' }
+      };
+      cellObj.font = { color: { argb: 'FFFFFFFF' }, bold: true, size: 9 };
+      cellObj.alignment = { horizontal: 'center', vertical: 'middle' };
+      cellObj.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      };
+    });
+    
+    // Apply formatting to new split headers (Time and Email reminder sections)
+    ['BC3', 'BJ3'].forEach(cell => {
+      const cellObj = tasksSheet.getCell(cell);
+      cellObj.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFF79646' }
       };
       cellObj.font = { color: { argb: 'FFFFFFFF' }, bold: true, size: 9 };
       cellObj.alignment = { horizontal: 'center', vertical: 'middle' };
@@ -441,8 +463,10 @@ export async function POST(request: NextRequest) {
       tasksSheet.getCell(`Y${taskRowIndex}`).value = task.estTimeHours;
       tasksSheet.getCell(`Z${taskRowIndex}`).value = task.notes;
       
-      // Add borders to data rows
-      const columns = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC'];
+      // Add borders to data rows (extending to all columns through BL)
+      const columns = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+                      'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ',
+                      'BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL'];
       columns.forEach(col => {
         const cell = tasksSheet.getCell(`${col}${taskRowIndex}`);
         cell.border = {
