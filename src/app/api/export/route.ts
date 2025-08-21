@@ -3,6 +3,7 @@ import { validateAdminToken, errorResponse, successResponse, unauthorizedRespons
 import { prisma } from '@/lib/prisma';
 import { validateExportData, formatValidationErrors } from '@/lib/exportValidation';
 import ExcelJS from 'exceljs';
+import path from 'path';
 
 interface ExportRequest {
   buildingIds?: number[];
@@ -74,13 +75,6 @@ export async function POST(request: NextRequest) {
       return errorResponse('No assignments found for the specified criteria');
     }
 
-    // Debug: Log task data to see what fields we're getting
-    console.log('First task data for debugging:', JSON.stringify(
-      assignments[0]?.pmTemplate?.tasks[0]?.taskTemplate,
-      null,
-      2
-    ));
-
     // Validate export data
     const validationResult = validateExportData(assignments);
     if (!validationResult.isValid) {
@@ -88,7 +82,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(errorMessage);
     }
 
-    // Generate Excel workbook
+    // Create a new workbook with the FMX format
     const workbook = new ExcelJS.Workbook();
     
     // Create Instructions sheet
