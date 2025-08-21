@@ -28,6 +28,9 @@ export { PMTemplateForm } from './pm-templates/PMTemplateForm';
 // Assignment components
 export { AssignmentManager } from './assignments/AssignmentManager';
 
+// Export components
+export { ExportManager } from './export/ExportManager';
+
 // Auth components
 export { AuthProvider } from './auth/AuthProvider';
 export { AdminTokenSetup } from './auth/AdminTokenSetup';
