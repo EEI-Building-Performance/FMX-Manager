@@ -158,7 +158,8 @@ export const ExportManager: React.FC = () => {
       }
 
       const result = await response.json();
-      setValidationResult(result.data);
+      console.log('Validation result:', result);
+      setValidationResult(result);
 
     } catch (error) {
       console.error('Validation error:', error);
