@@ -53,7 +53,7 @@ export function errorResponse(message: string, status: number = 500) {
 /**
  * Creates a standardized success response
  */
-export function successResponse(data: any, status: number = 200) {
+export function successResponse(data: unknown, status: number = 200) {
   return new Response(
     JSON.stringify(data),
     { 

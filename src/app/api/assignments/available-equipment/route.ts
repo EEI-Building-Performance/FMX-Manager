@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get all equipment in the building
-    let whereClause: any = { buildingId: buildingIdInt };
+    const whereClause: Record<string, unknown> = { buildingId: buildingIdInt };
 
     // If pmTemplateId is provided, we want to exclude equipment already assigned to this template
     let excludeEquipmentIds: number[] = [];

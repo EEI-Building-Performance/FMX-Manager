@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
     // Get equipment with building info for validation and building ID
     const equipment = await prisma.equipment.findMany({
-      where: { id: { in: equipmentIds.map((id: any) => parseInt(id)) } },
+      where: { id: { in: equipmentIds.map((id: string) => parseInt(id)) } },
       include: { building: true }
     });
 
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     const existingAssignments = await prisma.pMTemplateAssignment.findMany({
       where: {
         pmTemplateId: parseInt(pmTemplateId),
-        equipmentId: { in: equipmentIds.map((id: any) => parseInt(id)) }
+        equipmentId: { in: equipmentIds.map((id: string) => parseInt(id)) }
       }
     });
 
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
 
     // Create assignments
     const assignments = await prisma.pMTemplateAssignment.createMany({
-      data: equipmentIds.map((equipmentId: any) => {
+      data: equipmentIds.map((equipmentId: string) => {
         const eq = equipment.find(e => e.id === parseInt(equipmentId));
         return {
           pmTemplateId: parseInt(pmTemplateId),

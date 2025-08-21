@@ -62,6 +62,36 @@ interface TaskTemplate {
   };
 }
 
+// Interface for the form component (with instructionId and requestTypeId)
+interface TaskTemplateFormData {
+  id?: number;
+  name: string;
+  instructionId: number;
+  requestTypeId: number;
+  location?: string;
+  firstDueDate: string;
+  repeatEnum: string;
+  dailyEveryXDays?: number;
+  weeklySun?: boolean;
+  weeklyMon?: boolean;
+  weeklyTues?: boolean;
+  weeklyWed?: boolean;
+  weeklyThur?: boolean;
+  weeklyFri?: boolean;
+  weeklySat?: boolean;
+  weeklyEveryXWeeks?: number;
+  monthlyMode?: string;
+  monthlyEveryXMonths?: number;
+  yearlyEveryXYears?: number;
+  excludeFrom?: string;
+  excludeThru?: string;
+  nextDueMode?: string;
+  inventoryNames?: string;
+  inventoryQuantities?: string;
+  estTimeHours?: number;
+  notes?: string;
+}
+
 export default function TaskTemplatesPage() {
   const [taskTemplates, setTaskTemplates] = useState<TaskTemplate[]>([]);
   const [instructions, setInstructions] = useState<Instruction[]>([]);
@@ -135,6 +165,36 @@ export default function TaskTemplatesPage() {
       throw error;
     }
   };
+
+  // Convert API TaskTemplate to form format
+  const convertToFormData = (taskTemplate: TaskTemplate): TaskTemplateFormData => ({
+    id: taskTemplate.id,
+    name: taskTemplate.name,
+    instructionId: taskTemplate.instruction.id,
+    requestTypeId: taskTemplate.requestType.id,
+    location: taskTemplate.location,
+    firstDueDate: taskTemplate.firstDueDate,
+    repeatEnum: taskTemplate.repeatEnum,
+    dailyEveryXDays: taskTemplate.dailyEveryXDays,
+    weeklySun: taskTemplate.weeklySun,
+    weeklyMon: taskTemplate.weeklyMon,
+    weeklyTues: taskTemplate.weeklyTues,
+    weeklyWed: taskTemplate.weeklyWed,
+    weeklyThur: taskTemplate.weeklyThur,
+    weeklyFri: taskTemplate.weeklyFri,
+    weeklySat: taskTemplate.weeklySat,
+    weeklyEveryXWeeks: taskTemplate.weeklyEveryXWeeks,
+    monthlyMode: taskTemplate.monthlyMode,
+    monthlyEveryXMonths: taskTemplate.monthlyEveryXMonths,
+    yearlyEveryXYears: taskTemplate.yearlyEveryXYears,
+    excludeFrom: taskTemplate.excludeFrom,
+    excludeThru: taskTemplate.excludeThru,
+    nextDueMode: taskTemplate.nextDueMode,
+    inventoryNames: taskTemplate.inventoryNames,
+    inventoryQuantities: taskTemplate.inventoryQuantities,
+    estTimeHours: taskTemplate.estTimeHours,
+    notes: taskTemplate.notes
+  });
 
   const formatFrequency = (taskTemplate: TaskTemplate): string => {
     const { repeatEnum } = taskTemplate;
@@ -238,7 +298,7 @@ export default function TaskTemplatesPage() {
             size="xl"
           >
             <TaskTemplateForm
-              taskTemplate={selectedTaskTemplate || undefined}
+              taskTemplate={selectedTaskTemplate ? convertToFormData(selectedTaskTemplate) : undefined}
               instructions={instructions}
               requestTypes={requestTypes}
               onSubmit={handleSubmit}

@@ -64,10 +64,10 @@ export async function POST(request: NextRequest) {
     });
 
     return successResponse(building, 201);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating building:', error);
     
-    if (error.code === 'P2002') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
       return errorResponse('Building with this name or FMX name already exists', 409);
     }
     

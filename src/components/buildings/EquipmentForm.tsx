@@ -122,6 +122,13 @@ export function EquipmentForm({
     }
   };
 
+  const handleSelectChange = (field: keyof typeof formData) => (value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
   const buildingOptions = buildings.map(building => ({
     value: building.id,
     label: building.name
@@ -138,7 +145,7 @@ export function EquipmentForm({
         <Select
           label="Building"
           value={formData.buildingId}
-          onChange={handleInputChange('buildingId')}
+          onChange={handleSelectChange('buildingId')}
           options={buildingOptions}
           error={errors.buildingId}
           isRequired
@@ -159,7 +166,7 @@ export function EquipmentForm({
         <Select
           label="Equipment Type"
           value={formData.type}
-          onChange={handleInputChange('type')}
+          onChange={handleSelectChange('type')}
           options={typeOptions}
           error={errors.type}
           isRequired

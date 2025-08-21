@@ -9,7 +9,76 @@ interface ValidationResult {
   errors: ValidationError[];
 }
 
-export function validateExportData(assignments: any[]): ValidationResult {
+interface InstructionStep {
+  id: number;
+  orderIndex: number;
+  instructionSetId: number;
+  text: string;
+}
+
+interface Instruction {
+  id: number;
+  name: string;
+  description?: string | null;
+  steps: InstructionStep[];
+}
+
+interface RequestType {
+  id: number;
+  name: string;
+}
+
+interface TaskTemplate {
+  id: number;
+  name: string;
+  firstDueDate: string | Date;
+  repeatEnum: string;
+  dailyEveryXDays?: number | null;
+  weeklyEveryXWeeks?: number | null;
+  weeklySun?: boolean | null;
+  weeklyMon?: boolean | null;
+  weeklyTues?: boolean | null;
+  weeklyWed?: boolean | null;
+  weeklyThur?: boolean | null;
+  weeklyFri?: boolean | null;
+  weeklySat?: boolean | null;
+  monthlyEveryXMonths?: number | null;
+  monthlyMode?: string | null;
+  yearlyEveryXYears?: number | null;
+  excludeFrom?: string | Date | null;
+  excludeThru?: string | Date | null;
+  estTimeHours?: number | null | { toString(): string };
+  instruction: Instruction;
+  requestType: RequestType;
+}
+
+interface PMTemplateTask {
+  taskTemplate: TaskTemplate;
+}
+
+interface PMTemplate {
+  tasks: PMTemplateTask[];
+}
+
+interface Building {
+  id: number;
+  name: string;
+  fmxBuildingName: string;
+}
+
+interface Equipment {
+  id: number;
+  name: string;
+  fmxEquipmentName: string;
+  building: Building;
+}
+
+interface Assignment {
+  equipment: Equipment;
+  pmTemplate: PMTemplate;
+}
+
+export function validateExportData(assignments: Assignment[]): ValidationResult {
   const errors: ValidationError[] = [];
 
   if (assignments.length === 0) {
@@ -55,7 +124,7 @@ export function validateExportData(assignments: any[]): ValidationResult {
     }
 
     // Validate PM template tasks
-    assignment.pmTemplate.tasks.forEach((pmTemplateTask: any, taskIndex: number) => {
+    assignment.pmTemplate.tasks.forEach((pmTemplateTask, taskIndex: number) => {
       const task = pmTemplateTask.taskTemplate;
       const taskContext = `${assignmentContext}, Task ${taskIndex + 1}`;
 
@@ -187,7 +256,7 @@ export function validateExportData(assignments: any[]): ValidationResult {
             });
           } else {
             // Check for empty steps
-            const emptySteps = task.instruction.steps.filter((step: any) => 
+            const emptySteps = task.instruction.steps.filter((step) => 
               !step.text || step.text.trim() === ''
             );
             if (emptySteps.length > 0) {
@@ -202,8 +271,8 @@ export function validateExportData(assignments: any[]): ValidationResult {
 
         // Validate exclude dates (if provided)
         if (task.excludeFrom && task.excludeThru) {
-          const fromDate = new Date(task.excludeFrom);
-          const thruDate = new Date(task.excludeThru);
+          const fromDate = typeof task.excludeFrom === 'string' ? new Date(task.excludeFrom) : task.excludeFrom;
+          const thruDate = typeof task.excludeThru === 'string' ? new Date(task.excludeThru) : task.excludeThru;
           
           if (fromDate >= thruDate) {
             errors.push({
@@ -216,7 +285,10 @@ export function validateExportData(assignments: any[]): ValidationResult {
 
         // Validate estimated time (if provided)
         if (task.estTimeHours !== null && task.estTimeHours !== undefined) {
-          const estTime = parseFloat(task.estTimeHours.toString());
+          const estTimeStr = typeof task.estTimeHours === 'object' && task.estTimeHours.toString 
+            ? task.estTimeHours.toString() 
+            : task.estTimeHours.toString();
+          const estTime = parseFloat(estTimeStr);
           if (isNaN(estTime) || estTime < 0) {
             errors.push({
               field: 'task.estTimeHours',

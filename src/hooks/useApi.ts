@@ -13,7 +13,7 @@ interface ApiHookReturn<T> extends ApiState<T> {
   reset: () => void;
 }
 
-export function useApi<T = any>(
+export function useApi<T = unknown>(
   apiFunction: (...args: any[]) => Promise<T>
 ): ApiHookReturn<T> {
   const [state, setState] = useState<ApiState<T>>({
@@ -29,8 +29,8 @@ export function useApi<T = any>(
       const result = await apiFunction(...args);
       setState({ data: result, isLoading: false, error: null });
       return result;
-    } catch (error: any) {
-      const errorMessage = error.message || 'An error occurred';
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
       setState({ data: null, isLoading: false, error: errorMessage });
       throw error;
     }

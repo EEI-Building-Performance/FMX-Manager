@@ -243,6 +243,24 @@ export function TaskTemplateForm({
     }
   };
 
+  const handleSelectChange = (field: keyof typeof formData) => (value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const handleFrequencySelectChange = (field: keyof typeof frequencyData) => (value: string) => {
+    setFrequencyData(prev => ({ ...prev, [field]: value }));
+    if (errors.weeklyDays) {
+      setErrors(prev => ({ ...prev, weeklyDays: '' }));
+    }
+  };
+
+  const handleAdvancedSelectChange = (field: keyof typeof advancedData) => (value: string) => {
+    setAdvancedData(prev => ({ ...prev, [field]: value }));
+  };
+
   const handleFrequencyChange = (field: keyof typeof frequencyData) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -288,7 +306,7 @@ export function TaskTemplateForm({
           <Select
             label="Instruction Set"
             value={formData.instructionId}
-            onChange={handleInputChange('instructionId')}
+            onChange={handleSelectChange('instructionId')}
             options={instructionOptions}
             error={errors.instructionId}
             isRequired
@@ -299,7 +317,7 @@ export function TaskTemplateForm({
           <Select
             label="Request Type"
             value={formData.requestTypeId}
-            onChange={handleInputChange('requestTypeId')}
+            onChange={handleSelectChange('requestTypeId')}
             options={requestTypeOptions}
             error={errors.requestTypeId}
             isRequired
@@ -334,7 +352,7 @@ export function TaskTemplateForm({
           <Select
             label="Repeat Frequency"
             value={formData.repeatEnum}
-            onChange={handleInputChange('repeatEnum')}
+            onChange={handleSelectChange('repeatEnum')}
             options={repeatOptions}
             isRequired
             disabled={isLoading}
@@ -406,13 +424,13 @@ export function TaskTemplateForm({
 
           {formData.repeatEnum === 'MONTHLY' && (
             <div className={cls.fields}>
-              <Select
-                label="Monthly Mode"
-                value={frequencyData.monthlyMode}
-                onChange={handleFrequencyChange('monthlyMode')}
-                options={monthlyModeOptions}
-                disabled={isLoading}
-              />
+                              <Select
+                  label="Monthly Mode"
+                  value={frequencyData.monthlyMode}
+                  onChange={handleFrequencySelectChange('monthlyMode')}
+                  options={monthlyModeOptions}
+                  disabled={isLoading}
+                />
               
               <Input
                 label="Every X Months"
@@ -475,13 +493,13 @@ export function TaskTemplateForm({
                 />
               </div>
 
-              <Select
-                label="Next Due Mode"
-                value={advancedData.nextDueMode}
-                onChange={handleAdvancedChange('nextDueMode')}
-                options={nextDueModeOptions}
-                disabled={isLoading}
-              />
+                              <Select
+                  label="Next Due Mode"
+                  value={advancedData.nextDueMode}
+                  onChange={handleAdvancedSelectChange('nextDueMode')}
+                  options={nextDueModeOptions}
+                  disabled={isLoading}
+                />
 
               <div className={cls.inventoryFields}>
                 <Input

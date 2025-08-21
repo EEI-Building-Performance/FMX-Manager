@@ -262,7 +262,7 @@ export default function BuildingsPage() {
               <Select
                 label="Filter by Building"
                 value={selectedBuildingFilter}
-                onChange={(e) => setSelectedBuildingFilter(e.target.value)}
+                onChange={(value) => setSelectedBuildingFilter(value)}
                 options={buildingFilterOptions}
                 className={styles.buildingFilter}
               />
