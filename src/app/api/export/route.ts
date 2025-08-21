@@ -85,44 +85,230 @@ export async function POST(request: NextRequest) {
     // Create a new workbook with the FMX format
     const workbook = new ExcelJS.Workbook();
     
-    // Create Instructions sheet
+    // Create Instructions sheet with exact FMX format
     const instructionsSheet = workbook.addWorksheet('Instructions');
-    instructionsSheet.columns = [
-      { header: 'Name', key: 'name', width: 30 },
-      { header: 'Description', key: 'description', width: 50 },
-      { header: 'Steps', key: 'steps', width: 80 }
+    
+    // Set column widths
+    instructionsSheet.getColumn('A').width = 30;
+    instructionsSheet.getColumn('B').width = 50;
+    instructionsSheet.getColumn('C').width = 80;
+    
+    // Row 1-2: Merge A1:A2 (empty), Merge B1:C2 with "INSTRUCTIONS"
+    instructionsSheet.mergeCells('A1:A2');
+    instructionsSheet.mergeCells('B1:C2');
+    
+    // Set "INSTRUCTIONS" text in merged B1:C2
+    instructionsSheet.getCell('B1').value = 'INSTRUCTIONS';
+    instructionsSheet.getCell('B1').alignment = { horizontal: 'center', vertical: 'middle' };
+    instructionsSheet.getCell('B1').font = { size: 14, bold: true };
+    
+    // Row 3-4: Headers with purple background
+    instructionsSheet.mergeCells('A3:A4');
+    instructionsSheet.mergeCells('B3:B4');
+    instructionsSheet.mergeCells('C3:C4');
+    
+    // Set header values and formatting
+    const headerCells = [
+      { cell: 'A3', value: 'Name*' },
+      { cell: 'B3', value: 'Description' },
+      { cell: 'C3', value: 'Steps*' }
     ];
+    
+    headerCells.forEach(({ cell, value }) => {
+      const cellObj = instructionsSheet.getCell(cell);
+      cellObj.value = value;
+      cellObj.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'ffc0504d' }
+      };
+      cellObj.font = { color: { argb: 'FFFFFFFF' }, bold: true };
+      cellObj.alignment = { horizontal: 'center', vertical: 'middle' };
+      cellObj.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      };
+    });
 
-    // Create Tasks sheet
+    // Create Time-based tasks sheet with exact FMX format
     const tasksSheet = workbook.addWorksheet('Time-based tasks');
-    tasksSheet.columns = [
-      { header: 'Instruction', key: 'instruction', width: 30 },
-      { header: 'Name', key: 'name', width: 30 },
-      { header: 'Request Type', key: 'requestType', width: 20 },
-      { header: 'Buildings', key: 'buildings', width: 30 },
-      { header: 'Location', key: 'location', width: 20 },
-      { header: 'First due date', key: 'firstDueDate', width: 15 },
-      { header: 'Repeat', key: 'repeat', width: 15 },
-      { header: 'Daily every X days', key: 'dailyEveryXDays', width: 18 },
-      { header: 'Weekly Sun', key: 'weeklySun', width: 12 },
-      { header: 'Weekly Mon', key: 'weeklyMon', width: 12 },
-      { header: 'Weekly Tues', key: 'weeklyTues', width: 12 },
-      { header: 'Weekly Wed', key: 'weeklyWed', width: 12 },
-      { header: 'Weekly Thur', key: 'weeklyThur', width: 12 },
-      { header: 'Weekly Fri', key: 'weeklyFri', width: 12 },
-      { header: 'Weekly Sat', key: 'weeklySat', width: 12 },
-      { header: 'Weekly every X weeks', key: 'weeklyEveryXWeeks', width: 20 },
-      { header: 'Monthly mode', key: 'monthlyMode', width: 20 },
-      { header: 'Monthly every X months', key: 'monthlyEveryXMonths', width: 22 },
-      { header: 'Yearly every X years', key: 'yearlyEveryXYears', width: 20 },
-      { header: 'Exclude dates From', key: 'excludeFrom', width: 18 },
-      { header: 'Exclude dates Thru', key: 'excludeThru', width: 18 },
-      { header: 'Next due date mode', key: 'nextDueMode', width: 18 },
-      { header: 'Inventory used Names', key: 'inventoryNames', width: 25 },
-      { header: 'Inventory used Quantities', key: 'inventoryQuantities', width: 28 },
-      { header: 'Estimated time (hours)', key: 'estTimeHours', width: 20 },
-      { header: 'Notes', key: 'notes', width: 40 }
+    
+    // Set column widths (A-BC)
+    const columnWidths = [15, 20, 15, 20, 15, 15, 12, 12, 8, 8, 8, 8, 8, 8, 8, 12, 12, 12, 12, 15, 15, 15, 15, 15, 15, 15, 15, 15];
+    columnWidths.forEach((width, index) => {
+      tasksSheet.getColumn(index + 1).width = width;
+    });
+    
+    // Row 1-2: Section headers
+    tasksSheet.mergeCells('A1:A2'); // Empty
+    tasksSheet.mergeCells('B1:G2'); // TASK
+    tasksSheet.mergeCells('H1:H2'); // DAILY
+    tasksSheet.mergeCells('I1:P2'); // WEEKLY
+    tasksSheet.mergeCells('Q1:R2'); // MONTHLY
+    tasksSheet.mergeCells('S1:S2'); // YEARLY
+    tasksSheet.mergeCells('T1:BB2'); // TASK
+    tasksSheet.mergeCells('BC1:BL2'); // OCCURRENCES
+    
+    // Set section header values
+    const sectionHeaders = [
+      { cell: 'B1', value: 'TASK' },
+      { cell: 'H1', value: 'DAILY' },
+      { cell: 'I1', value: 'WEEKLY' },
+      { cell: 'Q1', value: 'MONTHLY' },
+      { cell: 'S1', value: 'YEARLY' },
+      { cell: 'T1', value: 'TASK' },
+      { cell: 'BC1', value: 'OCCURRENCES' }
     ];
+    
+    sectionHeaders.forEach(({ cell, value }) => {
+      const cellObj = tasksSheet.getCell(cell);
+      cellObj.value = value;
+      cellObj.alignment = { horizontal: 'center', vertical: 'middle' };
+      cellObj.font = { size: 12, bold: true };
+    });
+    
+    // Row 3-4: Column headers with specific colors
+    const headers = [
+      { range: 'A3:A4', value: 'Instructions', color: 'FFF79646' },
+      { range: 'B3:B4', value: 'Name*', color: 'FFC0504D' },
+      { range: 'C3:C4', value: 'Request type*', color: 'FFC0504D' },
+      { range: 'D3:D4', value: 'Buildings*', color: 'FFC0504D' },
+      { range: 'E3:E4', value: 'Location', color: 'FFC0504D' },
+      { range: 'F3:F4', value: 'First due date*', color: 'FFC0504D' },
+      { range: 'G3:G4', value: 'Repeat*', color: 'FFC0504D' },
+      { range: 'H3:H4', value: 'Every X days', color: 'FF9BBB59' },
+      { range: 'I3:I4', value: 'Sun', color: 'FF8064A2' },
+      { range: 'J3:J4', value: 'Mon', color: 'FF8064A2' },
+      { range: 'K3:K4', value: 'Tues', color: 'FF8064A2' },
+      { range: 'L3:L4', value: 'Wed', color: 'FF8064A2' },
+      { range: 'M3:M4', value: 'Thur', color: 'FF8064A2' },
+      { range: 'N3:N4', value: 'Fri', color: 'FF8064A2' },
+      { range: 'O3:O4', value: 'Sat', color: 'FF8064A2' },
+      { range: 'P3:P4', value: 'Every X weeks', color: 'FF8064A2' },
+      { range: 'Q3:Q4', value: 'Mode', color: 'FF4BACC6' },
+      { range: 'R3:R4', value: 'Every X months', color: 'FF4BACC6' },
+      { range: 'S3:S4', value: 'Every X years', color: 'FFF79646' },
+      { range: 'V3:V4', value: 'Next due date mode', color: 'FFC0504D' },
+      { range: 'Y3:Y4', value: 'Attachments', color: 'FFC0504D' },
+      { range: 'Z3:Z4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AA3:AA4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AB3:AB4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AC3:AC4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AD3:AD4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AE3:AE4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AF3:AF4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AG3:AG4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AH3:AH4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AI3:AI4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AJ3:AJ4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AK3:AK4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AL3:AL4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AM3:AM4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AN3:AN4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AO3:AO4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AP3:AP4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AQ3:AQ4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AR3:AR4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AS3:AS4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AT3:AT4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AU3:AU4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AV3:AV4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AW3:AW4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AX3:AX4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AY3:AY4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'AZ3:AZ4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'BA3:BA4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'BB3:BB4', value: '<Custom field>', color: 'FFC0504D' },
+      { range: 'BE3:BE4', value: 'Equipment items', color: 'FFF79646' },
+      { range: 'BF3:BF4', value: 'Tracked meters', color: 'FFF79646' },
+      { range: 'BG3:BG4', value: 'Assigned users', color: 'FFF79646' },
+      { range: 'BH3:BH4', value: 'Outsourced', color: 'FFF79646' },
+      { range: 'BI3:BI4', value: 'Ask for confirmation X day(s) before due', color: 'FFF79646' }
+    ];
+    
+    // Special headers that span across rows 3-4 but split in row 4
+    tasksSheet.mergeCells('T3:U3'); // Exclude dates
+    tasksSheet.mergeCells('W3:X3'); // Inventory used
+    tasksSheet.mergeCells('BC3:BD3'); // Time
+    tasksSheet.mergeCells('BJ3:BL3'); // Email reminder
+    
+    // Set "Exclude dates" and "Inventory used" headers
+    tasksSheet.getCell('T3').value = 'Exclude dates';
+    tasksSheet.getCell('W3').value = 'Inventory used';
+    tasksSheet.getCell('BC3').value = 'Time';
+    tasksSheet.getCell('BJ3').value = 'Send an email reminder';
+    
+    // Row 4 split headers
+    const splitHeaders = [
+      { cell: 'T4', value: 'From', color: 'FFC0504D' },
+      { cell: 'U4', value: 'Thru', color: 'FFC0504D' },
+      { cell: 'W4', value: 'Names', color: 'FFC0504D' },
+      { cell: 'X4', value: 'Quantities', color: 'FFC0504D' },
+      { cell: 'BC4', value: 'From', color: 'FFF79646' },
+      { cell: 'BD4', value: 'To', color: 'FFF79646' },
+      { cell: 'BJ4', value: 'X day(s) before due', color: 'FFF79646' },
+      { cell: 'BK4', value: '& X day(s) before due', color: 'FFF79646' },
+      { cell: 'BL4', value: 'X day(s) after due', color: 'FFF79646' }
+    ];
+    
+    // Apply all header formatting
+    headers.forEach(({ range, value, color }) => {
+      tasksSheet.mergeCells(range);
+      const startCell = range.split(':')[0];
+      const cellObj = tasksSheet.getCell(startCell);
+      cellObj.value = value;
+      cellObj.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: color }
+      };
+      cellObj.font = { color: { argb: 'FFFFFFFF' }, bold: true, size: 9 };
+      cellObj.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      cellObj.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      };
+    });
+    
+    // Apply formatting to split headers and their merged parents
+    ['T3', 'W3'].forEach(cell => {
+      const cellObj = tasksSheet.getCell(cell);
+      cellObj.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFC0504D' }
+      };
+      cellObj.font = { color: { argb: 'FFFFFFFF' }, bold: true, size: 9 };
+      cellObj.alignment = { horizontal: 'center', vertical: 'middle' };
+      cellObj.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      };
+    });
+    
+    splitHeaders.forEach(({ cell, value, color }) => {
+      const cellObj = tasksSheet.getCell(cell);
+      cellObj.value = value;
+      cellObj.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: color }
+      };
+      cellObj.font = { color: { argb: 'FFFFFFFF' }, bold: true, size: 9 };
+      cellObj.alignment = { horizontal: 'center', vertical: 'middle' };
+      cellObj.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      };
+    });
 
     // Create Occurrences sheet
     const occurrencesSheet = workbook.addWorksheet('Occurrences');
@@ -203,29 +389,85 @@ export async function POST(request: NextRequest) {
       });
     });
 
-    // Add data to sheets
+    // Add data to Instructions sheet starting from row 5
+    let instructionRowIndex = 5;
     Array.from(instructionsMap.values()).forEach(instruction => {
-      instructionsSheet.addRow(instruction);
+      instructionsSheet.getCell(`A${instructionRowIndex}`).value = instruction.name;
+      instructionsSheet.getCell(`B${instructionRowIndex}`).value = instruction.description;
+      instructionsSheet.getCell(`C${instructionRowIndex}`).value = instruction.steps;
+      
+      // Add borders to data rows
+      ['A', 'B', 'C'].forEach(col => {
+        const cell = instructionsSheet.getCell(`${col}${instructionRowIndex}`);
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
+        };
+      });
+      
+      instructionRowIndex++;
     });
 
+    // Add data to Tasks sheet starting from row 5
+    let taskRowIndex = 5;
     Array.from(tasksMap.values()).forEach(task => {
-      tasksSheet.addRow(task);
+      // Map task data to the correct columns
+      tasksSheet.getCell(`A${taskRowIndex}`).value = task.instruction;
+      tasksSheet.getCell(`B${taskRowIndex}`).value = task.name;
+      tasksSheet.getCell(`C${taskRowIndex}`).value = task.requestType;
+      tasksSheet.getCell(`D${taskRowIndex}`).value = task.buildings;
+      tasksSheet.getCell(`E${taskRowIndex}`).value = task.location;
+      tasksSheet.getCell(`F${taskRowIndex}`).value = task.firstDueDate;
+      tasksSheet.getCell(`G${taskRowIndex}`).value = task.repeat;
+      tasksSheet.getCell(`H${taskRowIndex}`).value = task.dailyEveryXDays;
+      tasksSheet.getCell(`I${taskRowIndex}`).value = task.weeklySun;
+      tasksSheet.getCell(`J${taskRowIndex}`).value = task.weeklyMon;
+      tasksSheet.getCell(`K${taskRowIndex}`).value = task.weeklyTues;
+      tasksSheet.getCell(`L${taskRowIndex}`).value = task.weeklyWed;
+      tasksSheet.getCell(`M${taskRowIndex}`).value = task.weeklyThur;
+      tasksSheet.getCell(`N${taskRowIndex}`).value = task.weeklyFri;
+      tasksSheet.getCell(`O${taskRowIndex}`).value = task.weeklySat;
+      tasksSheet.getCell(`P${taskRowIndex}`).value = task.weeklyEveryXWeeks;
+      tasksSheet.getCell(`Q${taskRowIndex}`).value = task.monthlyMode;
+      tasksSheet.getCell(`R${taskRowIndex}`).value = task.monthlyEveryXMonths;
+      tasksSheet.getCell(`S${taskRowIndex}`).value = task.yearlyEveryXYears;
+      tasksSheet.getCell(`T${taskRowIndex}`).value = task.excludeFrom;
+      tasksSheet.getCell(`U${taskRowIndex}`).value = task.excludeThru;
+      tasksSheet.getCell(`V${taskRowIndex}`).value = task.nextDueMode;
+      tasksSheet.getCell(`W${taskRowIndex}`).value = task.inventoryNames;
+      tasksSheet.getCell(`X${taskRowIndex}`).value = task.inventoryQuantities;
+      tasksSheet.getCell(`Y${taskRowIndex}`).value = task.estTimeHours;
+      tasksSheet.getCell(`Z${taskRowIndex}`).value = task.notes;
+      
+      // Add borders to data rows
+      const columns = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC'];
+      columns.forEach(col => {
+        const cell = tasksSheet.getCell(`${col}${taskRowIndex}`);
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' }
+        };
+      });
+      
+      taskRowIndex++;
     });
 
     occurrencesList.forEach(occurrence => {
       occurrencesSheet.addRow(occurrence);
     });
 
-    // Style the headers
-    [instructionsSheet, tasksSheet, occurrencesSheet].forEach(sheet => {
-      const headerRow = sheet.getRow(1);
-      headerRow.font = { bold: true };
-      headerRow.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FFE6E6FA' }
-      };
-    });
+    // Style the Occurrences sheet headers (Instructions and Tasks sheets are already styled above)
+    const occurrencesHeaderRow = occurrencesSheet.getRow(1);
+    occurrencesHeaderRow.font = { bold: true };
+    occurrencesHeaderRow.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFE6E6FA' }
+    };
 
     // Generate buffer
     const buffer = await workbook.xlsx.writeBuffer();
